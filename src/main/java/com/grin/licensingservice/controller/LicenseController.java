@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
+
 @RestController
 @RequestMapping(value = "v1/organization/{organizationId}/license")
 public class LicenseController {
@@ -35,9 +37,10 @@ public class LicenseController {
     @PostMapping
     public ResponseEntity<String> createLicense(
             @PathVariable("organizationId") String organizationId,
-            @RequestBody License license) {
+            @RequestBody License license,
+            @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
         return ResponseEntity.ok(
-                licenseService.createLicense(license, organizationId)
+                licenseService.createLicense(license, organizationId, locale)
         );
     }
 
