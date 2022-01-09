@@ -1,66 +1,61 @@
 package com.grin.licensingservice.service;
 
+import com.grin.licensingservice.config.ServiceConfig;
 import com.grin.licensingservice.model.License;
+import com.grin.licensingservice.repository.LicenseRepository;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Locale;
-import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class LicenseService {
 
     @Setter(onMethod = @__({@Autowired}))
     private MessageSource messageSource;
+    @Setter(onMethod = @__({@Autowired}))
+    private LicenseRepository licenseRepository;
+    @Setter(onMethod = @__({@Autowired}))
+    private ServiceConfig config;
+
 
     public License getLicense(String licenseId,
                               String organizationId) {
-        return License.builder()
-                .id(new Random().nextInt(100))
-                .licenseId(licenseId)
-                .organizationId(organizationId)
-                .description("Software product")
-                .productName("Ostock")
-                .licenseType("full")
-                .build();
-    }
+        License license = licenseRepository
+                .findLicenseByOrganizationIdAndLicenseId(organizationId, licenseId);
 
-    public String createLicense(License license,
-                                String organizationId,
-                                Locale locale) {
-        String responseMessage = null;
-
-        if (license != null) {
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(
-                    messageSource.getMessage("license.message.create", null, locale),
-                    license);
+        if (license == null) {
+            throw new IllegalArgumentException(
+                    String.format(messageSource.getMessage(
+                      "license.message.search.error", null, null),
+                            licenseId, organizationId)
+            );
         }
 
-        return responseMessage;
+        return license.withComment(config.getProperty());
     }
 
-    public String updateLicense(License license,
-                                String organizationId) {
-        String responseMessage = null;
-        if (!ObjectUtils.isEmpty(license)) {
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(
-                    messageSource.getMessage("license.update.message", null, null),
-                    license);
-        }
+    public License createLicense(License license) {
+        license.setLicenseId(UUID.randomUUID().toString());
+        licenseRepository.save(license);
 
-        return responseMessage;
+        return license.withComment(config.getProperty());
     }
 
-    public String deleteLicense(String licenseId,
-                                String organizationId) {
+    public License updateLicense(License license) {
+        licenseRepository.save(license);
+
+        return license.withComment(config.getProperty());
+    }
+
+    public String deleteLicense(String licenseId) {
+        licenseRepository.delete(licenseRepository.findLicenseByLicenseId(licenseId));
+
         return String.format(
                 messageSource.getMessage("license.delete.message", null, null),
-                licenseId,
-                organizationId);
+                licenseId);
     }
 }
