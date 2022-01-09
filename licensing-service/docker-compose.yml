@@ -2,8 +2,9 @@ version: '3'
 
 services:
   licensingservice:
-    image: ostock/licensing-service:0.3.0-SNAPSHOT
+    image: ostock/licensing-service:0.4.0-SNAPSHOT
     ports:
       - "8081:8081"
     environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
+      SPRING_PROFILES_ACTIVE: "dev"
+      SPRING_CLOUD_CONFIG_URI: http://localhost:8071
