@@ -1,0 +1,4 @@
+FROM postgres:latest as build
+
+COPY init.sql /docker-entrypoint-initdb.d/1-init.sql
+COPY data.sql /docker-entrypoint-initdb.d/2-data.sql

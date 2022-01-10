@@ -1,0 +1,40 @@
+version: '2.1'
+
+services:
+  database:
+    build: ./db_init
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: "ostock_dev"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  configserver:
+    build: ./../configserver
+    ports:
+      - "8071:8071"
+
+  licensingservice:
+    build: ./../licensing-service
+    environment:
+      PROFILE: "dev"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/ostock_dev
+    ports:
+      - "8081:8081"
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+
+networks:
+  backend:
+    driver: bridge
