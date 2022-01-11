@@ -6,9 +6,9 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "123"
-      POSTGRES_DB: "ostock_dev"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: ostock_dev
       PGDATA: /var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -16,16 +16,25 @@ services:
       timeout: 5s
       retries: 5
     restart: always
+    networks:
+      backend:
+        aliases:
+          - database
 
   configserver:
     build: ./../configserver
     ports:
       - "8071:8071"
+    networks:
+      backend:
+        aliases:
+          - configserver
 
   licensingservice:
     build: ./../licensing-service
     environment:
-      PROFILE: "dev"
+      PROFILE: dev
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8071
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/ostock_dev
     ports:
       - "8081:8081"
@@ -34,6 +43,10 @@ services:
         condition: service_healthy
       configserver:
         condition: service_started
+    networks:
+      - backend
+    links:
+      - database
 
 networks:
   backend:

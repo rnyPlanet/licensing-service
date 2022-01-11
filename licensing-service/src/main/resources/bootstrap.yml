@@ -2,7 +2,10 @@ spring:
   application:
     name: licensing-service
   profiles:
-    active: dev
+    active: dock
   cloud:
+    enabled: true
     config:
+      retry:
+        maxAttempts: 20
       uri: http://localhost:8071
