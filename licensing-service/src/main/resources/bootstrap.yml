@@ -2,7 +2,7 @@ spring:
   application:
     name: licensing-service
   profiles:
-    active: dock
+    active: dev
   cloud:
     enabled: true
     config:
