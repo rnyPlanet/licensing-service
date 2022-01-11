@@ -33,7 +33,7 @@ services:
   licensingservice:
     build: ./../licensing-service
     environment:
-      PROFILE: dock
+      SPRING_PROFILES_ACTIVE: dock
       SPRING_CLOUD_CONFIG_URI: http://configserver:8071
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/ostock_dev
     ports:
@@ -47,6 +47,22 @@ services:
       - backend
     links:
       - database
+
+  organizationservice:
+    build: ./../organization-service
+    environment:
+      SPRING_PROFILES_ACTIVE: dock
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8071
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/ostock_dev
+    depends_on:
+      database:
+        condition: service_healthy
+      configserver:
+        condition: service_started
+    ports:
+      - "8082:8082"
+    networks:
+      - backend
 
 networks:
   backend:
