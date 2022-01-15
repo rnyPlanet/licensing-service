@@ -3,10 +3,7 @@ package com.grin.licensingservice.model;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,6 +17,7 @@ public class License extends RepresentationModel<License> {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue
     private int id;
     private String licenseId;
     private String description;
@@ -31,6 +29,9 @@ public class License extends RepresentationModel<License> {
     private String licenseType;
     @Column(name = "comment")
     private String comment;
+
+    @Transient
+    private Organization organization;
 
     public License withComment(String comment) {
         this.setComment(comment);
