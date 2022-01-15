@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: dev
+  cloud:
+    enabled: true
+    config:
+      retry:
+        maxAttempts: 20
+      uri: http://localhost:8071
+
+    loadbalancer:
+      ribbon:
+        enabled: false
