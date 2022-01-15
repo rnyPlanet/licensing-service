@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,11 +21,14 @@ public class OrganizationService {
         return opt.orElse(null);
     }
 
+    public List<Organization> findAll() {
+        return organizationRepository.findAll();
+    }
+
     public Organization create(Organization organization) {
         organization.setId(UUID.randomUUID().toString());
         organization = organizationRepository.save(organization);
         return organization;
-
     }
 
     public void update(Organization organization) {

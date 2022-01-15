@@ -8,12 +8,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "v1/organization")
 public class OrganizationController {
 
     @Setter(onMethod = @__({@Autowired}))
     private OrganizationService organizationService;
+
+    @GetMapping(value = "")
+    public ResponseEntity<List<Organization>> getOrganizations() {
+        return ResponseEntity.ok(
+                organizationService.findAll()
+        );
+    }
 
     @GetMapping(value = "/{organizationId}")
     public ResponseEntity<Organization> getOrganization(
