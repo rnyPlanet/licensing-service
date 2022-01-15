@@ -61,6 +61,8 @@ services:
         condition: service_healthy
       configserver:
         condition: service_started
+      eurekaserver:
+        condition: service_started
     networks:
       - backend
     links:
@@ -76,6 +78,8 @@ services:
       database:
         condition: service_healthy
       configserver:
+        condition: service_started
+      eurekaserver:
         condition: service_started
     ports:
       - "8082:8082"
