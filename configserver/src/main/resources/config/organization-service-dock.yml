@@ -1,0 +1,13 @@
+example:
+  property: I AM DOCK
+
+spring:
+  datasource:
+    url: jdbc:postgresql://database:5432/ostock_dev
+    username: postgres
+    password: 123
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eurekaserver:8070/eureka/
