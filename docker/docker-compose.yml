@@ -49,7 +49,7 @@ services:
           - eurekaserver
 
   gatewayserver:
-    image: ostock/gatewayserver:0.0.1-SNAPSHOT
+    build: ./../gatewayserver
     ports:
       - "8072:8072"
     environment:
