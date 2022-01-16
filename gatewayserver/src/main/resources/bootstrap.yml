@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gateway-server
+  profiles:
+    active: dev
+  cloud:
+    enabled: true
+    config:
+      retry:
+        maxAttempts: 20
+      uri: http://localhost:8071
+  main:
+    web-application-type: reactive
