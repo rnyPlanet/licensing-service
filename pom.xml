@@ -26,6 +26,7 @@
         <module>eurekaserver</module>
         <module>licensing-service</module>
         <module>organization-service</module>
+        <module>gatewayserver</module>
     </modules>
 
     <dependencies>
