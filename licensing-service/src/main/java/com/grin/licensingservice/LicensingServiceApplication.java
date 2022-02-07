@@ -1,6 +1,6 @@
 package com.grin.licensingservice;
 
-import com.grin.organizationservice.events.model.OrganizationChangeModel;
+import com.grin.licensingservice.events.model.OrganizationChangeModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
