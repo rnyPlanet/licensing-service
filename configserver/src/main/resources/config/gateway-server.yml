@@ -11,6 +11,8 @@ eureka:
       defaultZone: http://localhost:8070/eureka/
 
 spring:
+  main:
+    web-application-type: reactive
   cloud:
     gateway:
       routes:
