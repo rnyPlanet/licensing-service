@@ -4,16 +4,10 @@ import com.grin.organizationservice.events.model.OrganizationChangeModel;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SimpleSourceBean {
-
-    @Setter(onMethod = @__({@Autowired}))
-    private Source source;
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleSourceBean.class);
 
@@ -24,6 +18,5 @@ public class SimpleSourceBean {
                 action,
                 organizationId);
 
-        source.output().send(MessageBuilder.withPayload(change).build());
     }
 }
